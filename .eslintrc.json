@@ -1,69 +1,81 @@
 {
-    "env": {
-        "browser": true,
-        "es2021": true,
-        "jest": true
+  "env": {
+    "browser": true,
+    "es2021": true,
+    "jest": true
+  },
+  "extends": [
+    "plugin:import/typescript",
+    "plugin:react/recommended",
+    "airbnb",
+    "plugin:react/recommended",
+    "plugin:prettier/recommended",
+    "plugin:import/errors",
+    "plugin:import/warnings"
+  ],
+  "parser": "@typescript-eslint/parser",
+  "parserOptions": {
+    "ecmaFeatures": {
+      "jsx": true
     },
-    "extends": [
-        "plugin:import/typescript",
-        "plugin:react/recommended",
-        "airbnb",
-        "plugin:react/recommended",
-        "plugin:prettier/recommended",
-        "plugin:import/errors",
-        "plugin:import/warnings"
+    "ecmaVersion": 2021,
+    "sourceType": "module",
+    "project": "./tsconfig.json"
+  },
+  "plugins": [
+    "react",
+    "@typescript-eslint"
+  ],
+  "rules": {
+    "prettier/prettier": [
+      "off",
+      {
+        "endOfLine": "auto"
+      }
     ],
-    "parser": "@typescript-eslint/parser",
-    "parserOptions": {
-        "ecmaFeatures": {
-            "jsx": true
-        },
-        "ecmaVersion": 2021,
-        "sourceType": "module",
-        "project": "./tsconfig.json"
-    },
-    "plugins": ["react", "@typescript-eslint"],
-    "rules": {
-        "prettier/prettier": [
-            "off",
-            {
-                "endOfLine": "auto"
-            }
-        ],
-        "no-unused-vars": "off",
-        "import/prefer-default-export": "off",
-        "react/react-in-jsx-scope": "off",
-        "react/jsx-no-useless-fragment": "off",
-        "react/jsx-props-no-spreading": "off",
-        "react/jsx-no-bind": "off",
-        "react/destructuring-assignment": "off",
-        "react/require-default-props": "off",
-        "no-use-before-define": "off",
-        "no-underscore-dangle": "off",
-        "@typescript-eslint/no-use-before-define": ["error"],
-        "react/jsx-filename-extension": [
-            1,
-            {
-                "extensions": [".tsx"]
-            }
-        ],
-        "no-shadow": "off",
-        "@typescript-eslint/no-shadow": ["error"],
-        "import/extensions": [
-            "error",
-            "ignorePackages",
-            {
-                "js": "never",
-                "jsx": "never",
-                "ts": "never",
-                "tsx": "never"
-            }
+    "no-unused-vars": "off",
+    "import/prefer-default-export": "off",
+    "react/react-in-jsx-scope": "off",
+    "react/jsx-no-useless-fragment": "off",
+    "react/jsx-props-no-spreading": "off",
+    "react/jsx-no-bind": "off",
+    "react/destructuring-assignment": "off",
+    "react/require-default-props": "off",
+    "no-use-before-define": "off",
+    "no-underscore-dangle": "off",
+    "import/no-extraneous-dependencies": "off",
+    "jsx-a11y/click-events-have-key-events": 0,
+    "jsx-a11y/no-static-element-interactions": 0,
+    "@typescript-eslint/no-use-before-define": [
+      "error"
+    ],
+    "react/jsx-filename-extension": [
+      1,
+      {
+        "extensions": [
+          ".tsx"
         ]
-    },
-    "settings": {
-        "import/resolver": {
-            "typescript": {}
-            // this loads <rootdir>/tsconfig.json to eslint
-        }
+      }
+    ],
+    "no-shadow": "off",
+    "@typescript-eslint/no-shadow": [
+      "error"
+    ],
+    "import/extensions": [
+      "error",
+      "ignorePackages",
+      {
+        "js": "never",
+        "jsx": "never",
+        "ts": "never",
+        "tsx": "never"
+      }
+    ]
+  },
+  "settings": {
+    "import/resolver": {
+      "typescript": {}
+      // this loads <rootdir>/tsconfig.json to eslint
     }
+  }
 }
