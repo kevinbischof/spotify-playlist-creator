@@ -26,5 +26,3 @@ yarn-error.log*
 .idea/vcs.xml
 
 .env
-
-public

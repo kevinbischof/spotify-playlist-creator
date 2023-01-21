@@ -8,9 +8,10 @@ import { getUser } from './login.helpers'
 type LoginProps = {}
 
 export default function Login(props: LoginProps): ReactElement {
+    const nodeEnv = env.NODE_ENV || null
     const CLIENT_ID = '430fcf1880e94356ba68e8178e1efe00'
     const REDIRECT_URI =
-        env.NODE_ENV === 'develop'
+        nodeEnv === 'develop'
             ? 'http://localhost:3000'
             : 'https://kevinbischof.github.io/spotify-playlist-creator/'
     const AUTH_ENDPOINT = 'https://accounts.spotify.com/authorize'
