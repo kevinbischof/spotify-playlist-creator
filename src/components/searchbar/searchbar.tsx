@@ -8,6 +8,7 @@ import { getTopTracksFromArtist } from '../../api/getTopTracksFromArtist'
 import { createNewPlaylist } from '../../api/createNewPlaylist'
 import { addItemsToPlaylist } from '../../api/addItemsToPlaylist'
 import { searchArtist } from '../../api/searchArtist'
+import { Checkbox } from '../formFields/checkbox'
 
 interface Props {
     token: string
@@ -206,6 +207,7 @@ export function SearchBar({ token, user }: Props) {
                 placeholder="Description"
                 className="search-input"
             />
+            <Checkbox onChange={(e) => {}} label="Public" />
             {selectedValues.length > 0 && (
                 <>
                     <div className="loginButtonWrapper">
