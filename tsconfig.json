@@ -19,6 +19,12 @@
         "outDir": "./dist/",
         "noImplicitAny": true
     },
-    "include": ["src", "webpack.config.ts", "**/*.ts", "**/*.tsx"],
-    "exclude": ["node_modules", "**/*.spec.ts"]
+    "include": [
+        "src",
+        "webpack.config.ts",
+        "**/*.ts",
+        "**/*.tsx",
+        ".eslintrc.json"
+    ],
+    "exclude": ["node_modules", "**/*.spec.ts", "public"]
 }
