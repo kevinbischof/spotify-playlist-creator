@@ -30,3 +30,4 @@ jobs:
         with:
           folder: . # The folder the action should deploy.
           branch: gh-pages
+          ssh-key: ${{ secrets.githubpages }}
