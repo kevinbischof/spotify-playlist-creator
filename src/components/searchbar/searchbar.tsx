@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useState } from 'react'
 import { useKeyPress } from 'react-use'
 import './searchbar.css'
 import { FaTrash } from '@react-icons/all-files/fa/FaTrash'
@@ -25,10 +25,6 @@ export function SearchBar({ token, user }: Props) {
     const [playlistName, setPlayListName] = useState<string>('')
     const [description, setDescription] = useState<string>('')
     const [isPublic, setIsPublic] = useState<boolean>(false)
-
-    useEffect(() => {
-        console.log(tracks)
-    }, [tracks])
 
     const handleChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
         const inputValue = e.target.value
@@ -211,7 +207,7 @@ export function SearchBar({ token, user }: Props) {
                 placeholder="Description"
                 className="search-input"
             />
-            <Checkbox onChange={(e) => console.log(e)} label="Public" />
+            <Checkbox onChange={(e) => {}} label="Public" />
             {selectedValues.length > 0 && (
                 <>
                     <div className="loginButtonWrapper">
