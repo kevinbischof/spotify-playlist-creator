@@ -28,7 +28,7 @@ jobs:
       - name: Deploy
         env:
           MY_EMAIL: kevin.bischof@posteo.de
-          MY_NAME: Kevin Bischof
+          MY_NAME: "Kevin Bischof"
           GITHUB_USERNAME: kevinbischof
           REPOSITORY_NAME: spotify-playlist-creator
         run: |
