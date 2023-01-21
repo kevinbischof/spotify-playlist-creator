@@ -24,5 +24,16 @@ jobs:
         run: |
           npm ci
           npm run build
+
+      - name: Deploy
+        env:
+          MY_EMAIL: kevin.bischof@posteo.de
+          MY_NAME: Kevin Bischof
+          GITHUB_USERNAME: kevinbischof
+          REPOSITORY_NAME: spotify-playlist-creator
+        run: |
+          git config --global user.email $MY_EMAIL
+          git config --global user.name $MY_NAME
+          git remote set-url origin https://$MY_NAME:${{ secrets.GH_SECRET }}@github.com/$GITHUB_USERNAME/$REPOSITORY_NAME.git
           npm run deploy
 
