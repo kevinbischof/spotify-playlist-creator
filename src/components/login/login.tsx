@@ -1,5 +1,6 @@
 import { ReactElement, useEffect, useState } from 'react'
 import './login.styles.css'
+import env from 'react-dotenv'
 import { SearchBar } from '../searchbar/searchbar'
 import { User } from '../searchbar/spotify.types'
 import { getUser } from './login.helpers'
@@ -8,7 +9,10 @@ type LoginProps = {}
 
 export default function Login(props: LoginProps): ReactElement {
     const CLIENT_ID = '430fcf1880e94356ba68e8178e1efe00'
-    const REDIRECT_URI = 'http://localhost:3000'
+    const REDIRECT_URI =
+        env.NODE_ENV === 'develop'
+            ? 'http://localhost:3000'
+            : 'https://kevinbischof.github.io/spotify-playlist-creator/'
     const AUTH_ENDPOINT = 'https://accounts.spotify.com/authorize'
     const RESPONSE_TYPE = 'token'
     const SCOPE = 'playlist-modify-public'
