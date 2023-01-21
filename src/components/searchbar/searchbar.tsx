@@ -1,14 +1,14 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useKeyPress } from 'react-use'
 import './searchbar.css'
-import axios from 'axios'
 import { FaTrash } from '@react-icons/all-files/fa/FaTrash'
 import { Item, Track, User } from './spotify.types'
-import {
-    addItemsToPlaylist,
-    createNewPlaylist,
-    getTopTracksFromArtist,
-} from './searchbar.helpers'
+import { Input } from '../formFields/input'
+import { getTopTracksFromArtist } from '../../api/getTopTracksFromArtist'
+import { createNewPlaylist } from '../../api/createNewPlaylist'
+import { addItemsToPlaylist } from '../../api/addItemsToPlaylist'
+import { searchArtist } from '../../api/searchArtist'
+import { Checkbox } from '../formFields/checkbox'
 
 interface Props {
     token: string
@@ -22,35 +22,42 @@ export function SearchBar({ token, user }: Props) {
     const enterKeyPress = useKeyPress('Enter')
     const [highlightIndex, setHighlightIndex] = useState(0)
     const [tracks, setTracks] = useState<Track[]>([])
+    const [playlistName, setPlayListName] = useState<string>('')
+    const [description, setDescription] = useState<string>('')
+    const [isPublic, setIsPublic] = useState<boolean>(false)
 
-    const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    useEffect(() => {
+        console.log(tracks)
+    }, [tracks])
+
+    const handleChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
         const inputValue = e.target.value
         setSearchValue(inputValue)
 
         if (inputValue.length > 0) {
-            axios
-                .get(`https://api.spotify.com/v1/search`, {
-                    params: { q: inputValue, limit: 10, type: 'artist' },
-                    headers: {
-                        Accept: 'application/json',
-                        Authorization: `Bearer ${token}`,
-                        'Content-Type': 'application/json',
-                    },
-                })
-                .then((response) => {
-                    if (response.data) {
-                        setSuggestions(response.data.artists.items as Item[])
-                    }
-                })
-                .catch()
+            const response = await searchArtist(inputValue, token)
+            if (response?.data) {
+                setSuggestions(response.data.artists.items as Item[])
+            }
         }
     }
 
-    const handleSelection = (suggestion: Item) => {
+    async function handleGetTopTracksFromArtist(
+        suggestion: Item
+    ): Promise<void> {
+        // @ts-ignore
+        const { data } = await getTopTracksFromArtist(suggestion.id, token)
+        if (data && data.tracks) {
+            setTracks(tracks.concat(data.tracks))
+        }
+    }
+
+    const handleSelection = async (suggestion: Item) => {
         setSelectedValues([...selectedValues, suggestion])
         setSearchValue('')
         setHighlightIndex(0)
         setSuggestions(suggestionsList?.filter((s) => s.id !== suggestion.id))
+        await handleGetTopTracksFromArtist(suggestion)
     }
 
     const handleKeyDown = (e: React.KeyboardEvent) => {
@@ -82,36 +89,29 @@ export function SearchBar({ token, user }: Props) {
         if (suggestionsList) {
             setSuggestions([...suggestionsList, value])
         }
+        setTracks(
+            tracks.filter((track) =>
+                track.artists.some(
+                    (artist) =>
+                        artist.name.toUpperCase() !== value.name.toUpperCase()
+                )
+            )
+        )
     }
 
     async function handleSubmitButton(): Promise<void> {
-        // @ts-ignore
-        const promises = []
-
-        selectedValues.forEach((element) => {
-            promises.push(getTopTracksFromArtist(element.id, token))
-        })
-
-        // @ts-ignore
-        Promise.all(promises).then((responseArray) => {
-            responseArray.forEach((response) => {
-                setTracks(tracks.concat(response.data.tracks))
-            })
-        })
-
         if (tracks.length > 0 && user) {
-            console.log('user: ', user)
-            createNewPlaylist(user.id, 'test', 'description', true, token).then(
-                (response) => {
-                    if (response.data) {
-                        addItemsToPlaylist(
-                            response.data.id,
-                            token,
-                            tracks
-                        ).then()
-                    }
+            await createNewPlaylist(
+                user.id,
+                playlistName,
+                description,
+                true,
+                token
+            ).then((response) => {
+                if (response.data) {
+                    addItemsToPlaylist(response.data.id, token, tracks)
                 }
-            )
+            })
         }
     }
 
@@ -124,8 +124,7 @@ export function SearchBar({ token, user }: Props) {
                 className="input-container"
                 style={{ flex: 1, position: 'relative' }}
             >
-                <input
-                    type="text"
+                <Input
                     value={searchValue}
                     onChange={handleChange}
                     onKeyDown={handleKeyDown}
@@ -200,6 +199,19 @@ export function SearchBar({ token, user }: Props) {
                     </div>
                 ))}
             </div>
+            <Input
+                value={playlistName}
+                onChange={(e) => setPlayListName(e.target.value)}
+                placeholder="Playlist name"
+                className="search-input"
+            />
+            <Input
+                value={description}
+                onChange={(e) => setDescription(e.target.value)}
+                placeholder="Description"
+                className="search-input"
+            />
+            <Checkbox onChange={(e) => console.log(e)} label="Public" />
             {selectedValues.length > 0 && (
                 <>
                     <div className="loginButtonWrapper">
