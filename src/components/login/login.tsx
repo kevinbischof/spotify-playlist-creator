@@ -8,7 +8,7 @@ import { getUser } from './login.helpers'
 type LoginProps = {}
 
 export default function Login(props: LoginProps): ReactElement {
-    const nodeEnv = env.NODE_ENV || null
+    const nodeEnv = env?.NODE_ENV || null
     const CLIENT_ID = '430fcf1880e94356ba68e8178e1efe00'
     const REDIRECT_URI =
         nodeEnv === 'develop'
