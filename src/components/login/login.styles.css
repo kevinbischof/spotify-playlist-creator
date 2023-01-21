@@ -1,8 +1,0 @@
-.login {
-    display: flex;
-    justify-content: center;
-    flex-direction: column;
-    align-content: center;
-    flex-wrap: wrap;
-    width: 75%;
-}
