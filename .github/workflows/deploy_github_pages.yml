@@ -26,13 +26,13 @@ jobs:
           npm run build
 
       - name: Deploy
+        with:
+          GITHUB_TOKEN: ${{ secrets.githubpages }}
         env:
           MY_EMAIL: kevin.bischof@posteo.de
           MY_NAME: "KevinBischof"
           GITHUB_USERNAME: kevinbischof
           REPOSITORY_NAME: spotify-playlist-creator
-        with:
-          GITHUB_TOKEN: ${{ secrets.githubpages }}
         run: |
           git config --global user.email $MY_EMAIL
           git config --global user.name $MY_NAME
